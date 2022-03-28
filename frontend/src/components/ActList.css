@@ -2,4 +2,15 @@
     overflow-y: auto;
     max-height: 400px;
   }
-  
+  .dropdown {
+    width: 100%;
+  }
+  .dropdown-trigger {
+    width: 100%;
+  }
+  button {
+    width: 100%;
+  }
+  .list-group-item {
+    width: 300px;
+  }
