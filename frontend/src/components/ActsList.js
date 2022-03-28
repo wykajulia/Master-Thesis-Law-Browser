@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Button, ListGroup } from 'react-bootstrap';
 import API from "../utils/API";
 import Loader from './Loader';
 import { useHistory } from 'react-router-dom';
@@ -51,35 +51,50 @@ const ActsList = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                height: '150px',
             }}>
-                <DropdownButton id="dropdown-basic-button" title={title.fullTitle} onSelect={handleSelectName} variant="secondary">
-                    {Object.keys(acts).map((item, index) => (
-                        <Dropdown.Item key={index} eventKey={item}>{item}</Dropdown.Item>
-                    ))}
-                </DropdownButton>
-                {
-                    options ?
-                        (
-                            <DropdownButton id="dropdown-basic-button" title={year} onSelect={handleSelectYear} variant="secondary">
-                                {options.map((item, index) => (
-                                    <Dropdown.Item key={index} eventKey={item}>{item}</Dropdown.Item>
-                                ))}
-                            </DropdownButton>
-                        ) :
-                        (
-                            <DropdownButton id="dropdown-basic-button" title={year} onSelect={handleSelectYear} variant="secondary" disabled>
-                            </DropdownButton>
-                        )
-                }
-                {
-                    options && year !== yearChooserText ?
-                        (
-                            <Button type="submit" onClick={onButtonSubmit} variant="secondary">Submit</Button>
-                        ) :
-                        (
-                            <Button type="submit" onClick={onButtonSubmit} variant="secondary" disabled>Submit</Button>
-                        )
-                }
+                <ListGroup horizontal>
+                    <ListGroup.Item>
+                        <DropdownButton id="dropdown-basic-button" title={title.fullTitle} onSelect={handleSelectName} variant="secondary">
+                            {Object.keys(acts).map((item, index) => (
+                                <Dropdown.Item id="dropdown-item" key={index} eventKey={item}>{item}</Dropdown.Item>
+                            ))}
+                        </DropdownButton>
+                    </ListGroup.Item>
+
+                    {
+                        options ?
+                            (<ListGroup.Item>
+                                <DropdownButton id="dropdown-basic-button" title={year} onSelect={handleSelectYear} variant="secondary">
+                                    {options.map((item, index) => (
+                                        <Dropdown.Item id="dropdown-item" key={index} eventKey={item}>{item}</Dropdown.Item>
+                                    ))}
+                                </DropdownButton>
+                            </ListGroup.Item>
+
+                            ) :
+                            (
+                                <ListGroup.Item>
+                                    <DropdownButton id="dropdown-basic-button" title={year} onSelect={handleSelectYear} variant="secondary" disabled>
+                                    </DropdownButton>
+                                </ListGroup.Item>
+
+                            )
+                    }
+                    {
+                        options && year !== yearChooserText ?
+                            (
+                                <ListGroup.Item>
+                                    <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary">Submit</Button>
+                                </ListGroup.Item>
+                            ) :
+                            (
+                                <ListGroup.Item>
+                                    <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary" disabled>Submit</Button>
+                                </ListGroup.Item>
+                            )
+                    }
+                </ListGroup>
             </div>
         )
     )
