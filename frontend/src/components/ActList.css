@@ -14,3 +14,12 @@
   .list-group-item {
     width: 300px;
   }
+
+  #dropdown-basic-button {
+    height: 60px;
+  }
+
+  #dropdown-item {
+    width: 265px;
+    text-align: center;
+  }
