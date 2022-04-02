@@ -5,6 +5,7 @@ from urllib.request import urlopen, Request
 
 import pdftotext
 import requests
+from bs4 import BeautifulSoup
 from flask import request, abort
 
 from src.app import app
@@ -46,10 +47,22 @@ def act_text():
 
     html_response = requests.get(f'http://api.sejm.gov.pl/eli/acts/{name}/{year}/{pos}/text.html')
     html_act = html_response.text if '<!DOCTYPE HTML>' in html_response.text else None
+    soup = ''
+    if html_act:
+        soup = BeautifulSoup(html_act, "html.parser")
+        for a in soup.find_all('a', href=True):
+            if 'text.html' in a['href']:
+                new_href = a['href'].split('deeds')[1].split('/')[1:4]
+                if len(new_href) == 3:
+                    a['href'] = f'/act-text/DU/{new_href[1]}/{new_href[2]}'
+                else:
+                    a.name = 'p'
+            else:
+                a.name = 'p'
     url = f'http://api.sejm.gov.pl/eli/acts/{name}/{year}/{pos}/text.pdf'
     title_response = json.loads(requests.get(f'http://api.sejm.gov.pl/eli/acts/{name}/{year}/{pos}').text)
 
-    result = {'data': {'url': url, 'html': html_act, 'title': title_response['title']}}
+    result = {'data': {'url': url, 'html': html_act if not act_text else str(soup), 'title': title_response['title']}}
     return app.response_class(json.dumps(result, sort_keys=False), mimetype=app.config['JSONIFY_MIMETYPE'])
 
 

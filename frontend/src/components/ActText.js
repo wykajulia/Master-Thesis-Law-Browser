@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import API from "../utils/API";
 import Loader from './Loader';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import ReactHtmlParser from 'react-html-parser';
 import ActReferences from './ActReferences';
 import PreviuosActTitle from './PreviousActTitle';
 import ReferencesFromText from './ReferencesFromText';
 import { PDFObject } from 'react-pdfobject'
+import './ActText.css'
 
 
 const ActText = () => {
@@ -116,7 +118,14 @@ const ActText = () => {
         if (actHTMLText) {
             return (<div>
                 {PreviuosActTitle()}
-                <div dangerouslySetInnerHTML={{ __html: actHTMLText }} />
+                <div>{ReactHtmlParser(actHTMLText, {
+                    transform: (node) => {
+                        if (node.name === 'a' && node.attribs && node.attribs.href) {
+                            return <Link to={{ pathname: node.attribs.href, state: { from: history.location.pathname } }} onClick={setReferencesNull}>{node.children[0].data}</Link>
+                        }
+                    }
+                }
+                )}</div>;
                 {display ? <PDFObject url={actText} page={pdfPageNo} width="100%" height="900px" pagemode={true} /> : <div width="1000px" height="900px" ></div>}
             </div>)
         }
