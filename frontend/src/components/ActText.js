@@ -103,6 +103,8 @@ const ActText = () => {
 
     const setReferencesNull = () => {
         setReferences(null);
+        setReferencesFromText(null);
+        setPdfPageNo(null);
     }
 
     const setPageNumber = (page) => {
