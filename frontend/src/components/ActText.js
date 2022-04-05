@@ -73,6 +73,7 @@ const ActText = () => {
         return history.listen(() => {
             setReferences(null);
             setPreviousAct(null);
+            setReferencesNull();
             if (!(history.location['state'] == undefined) && !(history.location['state']['from'] == undefined)) {
                 setPreviousAct(history.location['state']['from'].split('/').slice(2, 5));
             }
@@ -103,6 +104,8 @@ const ActText = () => {
 
     const setReferencesNull = () => {
         setReferences(null);
+        setReferencesFromText(null);
+        setPdfPageNo(null);
     }
 
     const setPageNumber = (page) => {
