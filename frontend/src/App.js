@@ -7,9 +7,41 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 
 const App = () => {
+  const setSessionStorage = (event) => {
+    if (!event) { event = window.event; }
+    if (!event.newValue) return;
+    if (event.key == 'getSessionStorage') {
+      // set sessionStorage in another tab
+      localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+      localStorage.removeItem('sessionStorage'); 
+    } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+      // another tab sent data
+      let data = JSON.parse(event.newValue);
+      for (let key in data) {
+        sessionStorage.setItem(key, data[key]);
+      }
+    }
+  }
+
+  const shareSessionStorage = () => {
+    // listen for changes to localStorage
+    if (window.addEventListener) {
+      window.addEventListener("storage", setSessionStorage, false);
+    } else {
+      window.attachEvent("onstorage", setSessionStorage);
+    };
+
+    // Ask other tabs for session storage (this is ONLY to trigger event)
+    if (!sessionStorage.length) {
+      localStorage.setItem('getSessionStorage', 'dummy data');
+      localStorage.removeItem('getSessionStorage', 'dummy data');
+    };
+
+  }
 
   return (
     <BrowserRouter>
+      {shareSessionStorage()}
       <Switch>
         <Route exact path="/">
           <Container fluid className="p-4">
