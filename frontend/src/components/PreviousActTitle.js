@@ -14,17 +14,9 @@ const PreviuosActTitle = () => {
         title = title.split('--')
     }
 
-    const handleClick = () => {  
-        console.log('aa')  
-        // if (event.ctrlKey) {
-        //     console.log('tab')
-        // } 
-      }
-      
-
     const renderElement = (item, idx) => {
         if (history.location.pathname.split('/').slice(2, 5).join('/') != item.split(":")[0])
-            return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. <Link onContextMenu={() => handleClick()} to={{ pathname: `/act-text/${item.split(":")[0]}`, state: { from: history.location.pathname } } }>{item.split(':')[1]}</Link></ListGroup.Item>
+            return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. <Link to={{ pathname: `/act-text/${item.split(":")[0]}`, state: { from: history.location.pathname } } }>{item.split(':')[1]}</Link></ListGroup.Item>
         else  return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. {item.split(':')[1]}</ListGroup.Item>
     }
     
