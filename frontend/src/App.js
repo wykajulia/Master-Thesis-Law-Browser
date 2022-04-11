@@ -7,29 +7,18 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 
 const App = () => {
-  const setSessionStorage = (event) => {
-    if (!event) { event = window.event; }
-    if (!event.newValue) return;
-    if (event.key == 'getSessionStorage') {
-      // set sessionStorage in another tab
-      localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
-      localStorage.removeItem('sessionStorage'); 
-    } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
-      // another tab sent data
-      let data = JSON.parse(event.newValue);
-      for (let key in data) {
-        sessionStorage.setItem(key, data[key]);
-      }
-    }
-  }
 
   const shareSessionStorage = () => {
-    // listen for changes to localStorage
-    if (window.addEventListener) {
-      window.addEventListener("storage", setSessionStorage, false);
-    } else {
-      window.attachEvent("onstorage", setSessionStorage);
-    };
+    window.addEventListener('storage', (event) => {
+      const actHistory = sessionStorage.getItem('PreviousTitle')
+      if(event.key === 'getSessionStorage' && actHistory) {
+        localStorage.setItem('HISTORY_SHARING', actHistory)
+        localStorage.removeItem('HISTORY_SHARING')
+      }
+      if (event.key === 'HISTORY_SHARING' && !actHistory) {
+        sessionStorage.setItem('PreviousTitle', event.newValue)
+      }
+    })
 
     // Ask other tabs for session storage (this is ONLY to trigger event)
     if (!sessionStorage.length) {
@@ -41,7 +30,6 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      {shareSessionStorage()}
       <Switch>
         <Route exact path="/">
           <Container fluid className="p-4">
@@ -59,6 +47,7 @@ const App = () => {
           <ActsTable />
         </Route>
         <Route path="/act-text/:name/:year/:pos">
+          {shareSessionStorage()}
           <ActText />
         </Route>
       </Switch>
