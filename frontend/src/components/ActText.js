@@ -37,6 +37,7 @@ const ActText = () => {
         ).then((response) => {
             setActText(response.data.data.url);
             setActHTMLText(response.data.data.html);
+            localStorage.setItem('ActualActTitle', `${queryParams.name}/${queryParams.year}/${queryParams.pos}:${response.data.data.title}`)
             setLoading(false);
         });
     }, [queryParams])
@@ -137,7 +138,7 @@ const ActText = () => {
     const ReturnActText = () => {
         if (actHTMLText) {
             return (<div>
-                {PreviuosActTitle()}
+                {<PreviuosActTitle></PreviuosActTitle>}
                 <div>{ReactHtmlParser(actHTMLText, {
                     transform: (node) => {
                         if (node.name === 'a' && node.attribs && node.attribs.href) {
@@ -151,7 +152,7 @@ const ActText = () => {
         }
         return (
             <div>
-                {PreviuosActTitle()}
+                {<PreviuosActTitle></PreviuosActTitle>}
                 {display ? <PDFObject url={actText} page={pdfPageNo} width="100%" height="900px" pagemode={true} /> : <div width="1000px" height="900px" ></div>}
             </div>
         )

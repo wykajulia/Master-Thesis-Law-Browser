@@ -6,7 +6,7 @@ import { ListGroup, Button, Card } from 'react-bootstrap';
 
 const PreviuosActTitle = () => {
     const history = useHistory()
-    // const [isOpen, setOpenHistory] = useState(false)
+    const [isOpen, setOpenHistory] = useState(false)
 
     let title = sessionStorage.getItem('PreviousTitle')
 
@@ -14,24 +14,32 @@ const PreviuosActTitle = () => {
         title = title.split('--')
     }
 
+    const handleClick = () => {  
+        console.log('aa')  
+        // if (event.ctrlKey) {
+        //     console.log('tab')
+        // } 
+      }
+      
+
     const renderElement = (item, idx) => {
         if (history.location.pathname.split('/').slice(2, 5).join('/') != item.split(":")[0])
-            return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. <Link to={{ pathname: `/act-text/${item.split(":")[0]}`, state: { from: history.location.pathname } }}>{item.split(':')[1]}</Link></ListGroup.Item>
+            return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. <Link onContextMenu={() => handleClick()} to={{ pathname: `/act-text/${item.split(":")[0]}`, state: { from: history.location.pathname } } }>{item.split(':')[1]}</Link></ListGroup.Item>
         else  return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. {item.split(':')[1]}</ListGroup.Item>
     }
     
 
-    // const onClickHandler = () => {
-    //     setOpenHistory(!isOpen);
-    // }
-    let isOpen = true;
+    const onClickHandler = () => {
+        setOpenHistory(!isOpen);
+    }
+    // let isOpen = true;
 
     return (
         <div>
             {
                 title ? (
                     <div>
-                        {/* <h2><Button style={{ width: "100%" }} variant="secondary" onClick={() => onClickHandler()}>Historia przeglądania</Button></h2> */}
+                        <h2><Button style={{ width: "100%" }} variant="secondary" onClick={() => onClickHandler()}>Historia przeglądania</Button></h2>
                         {isOpen ? (
                             <ListGroup>
                                 {
