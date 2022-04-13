@@ -6,13 +6,13 @@ import { useHistory } from 'react-router-dom';
 import './ActList.css'
 
 
-const yearChooserText = "Choose year";
+const yearChooserText = "Wybierz rok";
 
 
 const ActsList = () => {
     const [acts, setActs] = useState([]);
     const [isLoading, setLoading] = useState(true)
-    const [title, setTitle] = useState({ fullTitle: "Choose law journal name", code: null });
+    const [title, setTitle] = useState({ fullTitle: "Wybierz nazwę dziennika", code: null });
     const [year, setYear] = useState(yearChooserText);
     const [options, setOptions] = useState(null);
     const [buttonSubmit, setButtonSubmit] = useState(false);
@@ -85,12 +85,12 @@ const ActsList = () => {
                         options && year !== yearChooserText ?
                             (
                                 <ListGroup.Item>
-                                    <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary">Submit</Button>
+                                    <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary">Potwierdź</Button>
                                 </ListGroup.Item>
                             ) :
                             (
                                 <ListGroup.Item>
-                                    <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary" disabled>Submit</Button>
+                                    <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary" disabled>Potwierdź</Button>
                                 </ListGroup.Item>
                             )
                     }

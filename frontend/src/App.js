@@ -35,7 +35,7 @@ const App = () => {
           <Container fluid className="p-4">
             <Row style={{ display: 'flex', justifyContent: 'center' }} >
               <Col>
-                <h2 className="text-center">Laws Browser</h2>
+                <h2 className="text-center">Przeglądarka Aktów Prawnych</h2>
               </Col>
             </Row>
             <Row style={{ display: 'flex', justifyContent: 'center' }}>

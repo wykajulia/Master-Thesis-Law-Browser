@@ -169,7 +169,7 @@ const ActText = () => {
                             {ReturnActText()}
                         </Col>
                         <Col style={{ height: "100%", overflow: "auto" }}>
-                            <h1>References</h1>
+                            <h1>Referencje</h1>
                             <Row>{
                                 referencesFromText ? (
                                     Object.keys(referencesFromText).map(function (key, index) {

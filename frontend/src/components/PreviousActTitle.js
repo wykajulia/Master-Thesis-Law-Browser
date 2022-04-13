@@ -24,14 +24,13 @@ const PreviuosActTitle = () => {
     const onClickHandler = () => {
         setOpenHistory(!isOpen);
     }
-    // let isOpen = true;
 
     return (
         <div>
             {
                 title ? (
                     <div>
-                        <h2><Button style={{ width: "100%" }} variant="secondary" onClick={() => onClickHandler()}>Historia przeglądania</Button></h2>
+                        <h2><Button style={{ width: "100%"}} variant="success" onClick={() => onClickHandler()}>Historia przeglądania</Button></h2>
                         {isOpen ? (
                             <ListGroup>
                                 {

@@ -23,7 +23,7 @@ const ActsTable = () => {
       .then((response) => {
         setActs(response.data.items);
         setLoading(false);
-        localStorage.removeItem('PreviousTitle');
+        sessionStorage.removeItem('PreviousTitle');
       });
   }, [])
 
@@ -31,7 +31,7 @@ const ActsTable = () => {
     <Container fluid className="p-4">
       <Row style={{ display: 'flex', justifyContent: 'center' }} >
         <Col>
-          <h2 className="text-center">Laws Browser</h2>
+          <h2 className="text-center">Przeglądarka Aktów Prawnych</h2>
         </Col>
       </Row>
       <Row style={{ display: 'flex', justifyContent: 'center', paddingLeft: 25, paddingRight: 25 }}>
@@ -43,8 +43,8 @@ const ActsTable = () => {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Tile</th>
-                  <th>Announcement Date</th>
+                  <th>Tytuł</th>
+                  <th>Data ogłoszenia</th>
                 </tr>
               </thead>
               <tbody>
