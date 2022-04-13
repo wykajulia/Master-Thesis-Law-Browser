@@ -15,8 +15,8 @@ const App = () => {
         localStorage.setItem('HISTORY_SHARING', actHistory)
         localStorage.removeItem('HISTORY_SHARING')
       }
-      if (event.key === 'HISTORY_SHARING' && !actHistory) {
-        sessionStorage.setItem('PreviousTitle', event.newValue)
+      if (event.key === 'HISTORY_SHARING' && !actHistory && event.url.split('act-text')[1] === '/' + localStorage.getItem('ActualActTitle').split(':')[0]) {
+        sessionStorage.setItem('PreviousTitle', event.newValue + '--' + localStorage.getItem('ActualActTitle'))
       }
     })
 
