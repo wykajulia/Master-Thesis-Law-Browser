@@ -24,7 +24,7 @@ const ReferencesFromText = (props) => {
 
     return (
         <div>
-            <h2><Button style={{ width: "100%" }} variant="secondary" onClick={() => OnClickHandler()}>Page {parseInt(props.page) + 1}</Button></h2>
+            <h2><Button style={{ width: "100%" }} variant="secondary" onClick={() => OnClickHandler()}>Strona {parseInt(props.page) + 1}</Button></h2>
             {open ? (references.map((item, idx) => (
                 <Card key={idx + item}>
                     <Card.Header>{idx + 1}</Card.Header>

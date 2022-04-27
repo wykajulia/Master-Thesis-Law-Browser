@@ -37,6 +37,7 @@ const ActText = () => {
         ).then((response) => {
             setActText(response.data.data.url);
             setActHTMLText(response.data.data.html);
+            localStorage.setItem('ActualActTitle', `${queryParams.name}/${queryParams.year}/${queryParams.pos}:${response.data.data.title}`)
             setLoading(false);
         });
     }, [queryParams])
@@ -74,11 +75,23 @@ const ActText = () => {
             setReferences(null);
             setPreviousAct(null);
             setReferencesNull();
-            if (!(history.location['state'] == undefined) && !(history.location['state']['from'] == undefined)) {
+            let undone = true; 
+            if (history.action === 'POP') {
+               /* remove last element from session storage because it is the same act and do not add new elem */
+               let storage = sessionStorage.getItem('PreviousTitle')
+               if (storage) {
+                   storage = storage.split('--')
+                   if (storage.slice(-1)[0].split(':')[0] == (history.location.pathname.split('/').slice(2, 5).join('/'))) {
+                        sessionStorage.setItem('PreviousTitle', storage.slice(0, -1).join('--'))
+                        undone = false;
+                   }
+               }     
+            }
+            if (undone && !(history.location['state'] == undefined) && !(history.location['state']['from'] == undefined)) {
                 setPreviousAct(history.location['state']['from'].split('/').slice(2, 5));
             }
             else if (!(history.location['state'] == undefined) && history.location['state']['first'] == true) {
-                localStorage.removeItem('PreviousTitle');
+                sessionStorage.removeItem('PreviousTitle');
             }
             if (history.action === 'POP' | history.action === 'PUSH') {
                 setLoading(true);
@@ -97,7 +110,12 @@ const ActText = () => {
                     },
                 }
             ).then((response) => {
-                localStorage.setItem('PreviousTitle', response.data.title);
+                let storage = sessionStorage.getItem('PreviousTitle')
+                if (storage) {
+                    sessionStorage.setItem('PreviousTitle', storage + '--' + previousAct[0] + '/' + previousAct[1] + '/' + previousAct[2] + ':' + response.data.title);
+                } else {
+                    sessionStorage.setItem('PreviousTitle', previousAct[0] + '/' + previousAct[1] + '/' + previousAct[2] + ':' + response.data.title);
+                }
             });
         }
     }, [previousAct])
@@ -120,7 +138,7 @@ const ActText = () => {
     const ReturnActText = () => {
         if (actHTMLText) {
             return (<div>
-                {PreviuosActTitle()}
+                {<PreviuosActTitle></PreviuosActTitle>}
                 <div>{ReactHtmlParser(actHTMLText, {
                     transform: (node) => {
                         if (node.name === 'a' && node.attribs && node.attribs.href) {
@@ -134,7 +152,7 @@ const ActText = () => {
         }
         return (
             <div>
-                {PreviuosActTitle()}
+                {<PreviuosActTitle></PreviuosActTitle>}
                 {display ? <PDFObject url={actText} page={pdfPageNo} width="100%" height="900px" pagemode={true} /> : <div width="1000px" height="900px" ></div>}
             </div>
         )
@@ -151,7 +169,7 @@ const ActText = () => {
                             {ReturnActText()}
                         </Col>
                         <Col style={{ height: "100%", overflow: "auto" }}>
-                            <h1>References</h1>
+                            <h1>Referencje</h1>
                             <Row>{
                                 referencesFromText ? (
                                     Object.keys(referencesFromText).map(function (key, index) {
