@@ -11,16 +11,39 @@ from flask import request, abort
 from src.app import app
 
 
+@app.route('/act-types', methods=['GET'])
+def return_act_types():
+    request_args = request.args.to_dict()
+    name = request_args.get('name', None)
+    year = request_args.get('year', None)
+    if not name or not year:
+        abort(400, 'Wrong data provided')
+
+    response = requests.get(f'http://api.sejm.gov.pl/eli/acts/{name}/{year}')
+    result = json.loads(response.text)
+    act_types = []
+    for act_info in result['items']:
+        if act_info['type'] not in act_types:
+            act_types.append(act_info['type'])
+    return {'data': act_types}
+
+
 @app.route('/acts-year', methods=['GET'])
 def index():
     request_args = request.args.to_dict()
     name = request_args.get('name', None)
     year = request_args.get('year', None)
-    if not name and not year:
-        abort(400, 'No name and year provided')
+    act_type = request_args.get('type', None)
+    if not name or not year or not act_type:
+        abort(400, 'Wrong data provided')
 
     response = requests.get(f'http://api.sejm.gov.pl/eli/acts/{name}/{year}')
     result = json.loads(response.text)
+
+    type_result = {}
+    for act_info in result['items']:
+        type_result.setdefault(act_info['type'], []).append(act_info)
+    result['items'] = type_result[act_type]
     sort_by = request_args.get('sort_by', None)
     if sort_by:
         result['items'] = sorted(
