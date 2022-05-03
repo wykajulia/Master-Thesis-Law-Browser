@@ -7,6 +7,7 @@ import './ActList.css'
 
 
 const yearChooserText = "Wybierz rok";
+const typeChooserText = "Wybierz typ";
 
 
 const ActsList = () => {
@@ -16,6 +17,9 @@ const ActsList = () => {
     const [year, setYear] = useState(yearChooserText);
     const [options, setOptions] = useState(null);
     const [buttonSubmit, setButtonSubmit] = useState(false);
+    const [actTypes, setActTypes] = useState(null);
+    const [choosenActType, setChoosenActType] = useState(typeChooserText);
+    const [typeLoading, setTypeLoading] = useState(true);
     const history = useHistory();
 
 
@@ -25,6 +29,22 @@ const ActsList = () => {
             setLoading(false);
         });
     }, [])
+
+    useEffect(() => {
+        setTypeLoading(true);
+        if (title.code && year !== yearChooserText) (
+            API.get('/act-types', {
+                params: {
+                    name: title.code,
+                    year: year
+                }
+            }
+            ).then((response) => {
+                setActTypes(response.data.data);
+                setTypeLoading(false);
+            })
+        )
+    }, [year, title.code])
 
     const handleSelectName = (choosenOption) => {
         if (year !== yearChooserText) {
@@ -38,8 +58,12 @@ const ActsList = () => {
         setYear(choosenOption);
     };
 
+    const handleSelectActType = (choosenOption) => {
+        setChoosenActType(choosenOption);
+    };
+
     const onButtonSubmit = () => {
-        history.push(`/acts/${title.code}/${year}`);
+        history.push(`/acts/${title.code}/${year}/${choosenActType}`);
         setButtonSubmit(true);
     };
 
@@ -83,6 +107,30 @@ const ActsList = () => {
                     }
                     {
                         options && year !== yearChooserText ?
+                            (
+                                typeLoading ? (
+                                    <ListGroup.Item>
+                                        <Loader />
+                                    </ListGroup.Item>
+                                ) : (<ListGroup.Item>
+                                    <DropdownButton id="dropdown-basic-button" title={choosenActType} onSelect={handleSelectActType} variant="secondary">
+                                        {actTypes.map((item, index) => (
+                                            <Dropdown.Item id="dropdown-item" key={index} eventKey={item}>{item}</Dropdown.Item>
+                                        ))}
+                                    </DropdownButton>
+                                </ListGroup.Item>)
+
+                            ) :
+                            (
+                                <ListGroup.Item>
+                                    <DropdownButton id="dropdown-basic-button" title="Wybierz typ" onSelect={handleSelectActType} variant="secondary" disabled>
+                                    </DropdownButton>
+                                </ListGroup.Item>
+
+                            )
+                    }
+                    {
+                        options && year !== yearChooserText && choosenActType !== typeChooserText ?
                             (
                                 <ListGroup.Item>
                                     <Button type="submit" id='dropdown-basic-button' onClick={onButtonSubmit} variant="secondary">Potwierdź</Button>
