@@ -43,7 +43,7 @@ const App = () => {
             </Row>
           </Container>
         </Route>
-        <Route path="/acts/:name/:year">
+        <Route path="/acts/:name/:year/:type">
           <ActsTable />
         </Route>
         <Route path="/act-text/:name/:year/:pos">

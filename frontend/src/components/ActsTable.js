@@ -17,7 +17,8 @@ const ActsTable = () => {
     API.get('/acts-year', {
       params: {
         name: queryParams.name,
-        year: queryParams.year
+        year: queryParams.year,
+        type: queryParams.type,
       }
     })
       .then((response) => {
