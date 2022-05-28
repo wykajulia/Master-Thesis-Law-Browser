@@ -78,11 +78,11 @@ const ActText = () => {
             let undone = true; 
             if (history.action === 'POP') {
                /* remove last element from session storage because it is the same act and do not add new elem */
-               let storage = sessionStorage.getItem('PreviousTitle')
+               let storage = sessionStorage.getItem('BrowserHistory')
                if (storage) {
                    storage = storage.split('--')
                    if (storage.slice(-1)[0].split(':')[0] == (history.location.pathname.split('/').slice(2, 5).join('/'))) {
-                        sessionStorage.setItem('PreviousTitle', storage.slice(0, -1).join('--'))
+                        sessionStorage.setItem('BrowserHistory', storage.slice(0, -1).join('--'))
                         undone = false;
                    }
                }     
@@ -91,7 +91,7 @@ const ActText = () => {
                 setPreviousAct(history.location['state']['from'].split('/').slice(2, 5));
             }
             else if (!(history.location['state'] == undefined) && history.location['state']['first'] == true) {
-                sessionStorage.removeItem('PreviousTitle');
+                sessionStorage.removeItem('BrowserHistory');
             }
             if (history.action === 'POP' | history.action === 'PUSH') {
                 setLoading(true);
@@ -110,11 +110,11 @@ const ActText = () => {
                     },
                 }
             ).then((response) => {
-                let storage = sessionStorage.getItem('PreviousTitle')
+                let storage = sessionStorage.getItem('BrowserHistory')
                 if (storage) {
-                    sessionStorage.setItem('PreviousTitle', storage + '--' + previousAct[0] + '/' + previousAct[1] + '/' + previousAct[2] + ':' + response.data.title);
+                    sessionStorage.setItem('BrowserHistory', storage + '--' + previousAct[0] + '/' + previousAct[1] + '/' + previousAct[2] + ':' + response.data.title);
                 } else {
-                    sessionStorage.setItem('PreviousTitle', previousAct[0] + '/' + previousAct[1] + '/' + previousAct[2] + ':' + response.data.title);
+                    sessionStorage.setItem('BrowserHistory', previousAct[0] + '/' + previousAct[1] + '/' + previousAct[2] + ':' + response.data.title);
                 }
             });
         }
