@@ -8,15 +8,17 @@ const PreviuosActTitle = () => {
     const history = useHistory()
     const [isOpen, setOpenHistory] = useState(false)
 
-    let title = sessionStorage.getItem('PreviousTitle')
+    let browserHistory = sessionStorage.getItem('BrowserHistory')
 
-    if (title) {
-        title = title.split('--')
+    if (browserHistory) {
+        browserHistory = browserHistory.split('--')
     }
 
     const renderElement = (item, idx) => {
         if (history.location.pathname.split('/').slice(2, 5).join('/') != item.split(":")[0])
-            return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. <Link to={{ pathname: `/act-text/${item.split(":")[0]}`, state: { from: history.location.pathname } } }>{item.split(':')[1]}</Link></ListGroup.Item>
+            return <ListGroup.Item style={{ width: "100%" }}>
+                {idx + 1}. <Link to={{ pathname: `/act-text/${item.split(":")[0]}`, state: { from: history.location.pathname } } }>{item.split(':')[1]}</Link>
+                </ListGroup.Item>
         else  return <ListGroup.Item style={{ width: "100%" }}>{idx + 1}. {item.split(':')[1]}</ListGroup.Item>
     }
     
@@ -28,13 +30,13 @@ const PreviuosActTitle = () => {
     return (
         <div>
             {
-                title ? (
+                browserHistory ? (
                     <div>
                         <h2><Button style={{ width: "100%"}} variant="success" onClick={() => onClickHandler()}>Historia przeglądania</Button></h2>
                         {isOpen ? (
                             <ListGroup>
                                 {
-                                    title.map((item, idx) => {
+                                    browserHistory.map((item, idx) => {
                                         return renderElement(item, idx)
                                     })
                                 }
